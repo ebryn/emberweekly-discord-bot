@@ -1,0 +1,28 @@
+{
+  "name": "emberweekly-discord-bot",
+  "version": "0.0.1",
+  "description": "A bot to post candidate links for Ember Weekly.",
+  "main": "index.js",
+  "repository": "https://github.com/joelalejandro/emberweekly-discord-bot",
+  "author": "Joel A. Villarreal Bertoldi",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "btoa": "^1.2.1",
+    "discord.js": "^11.4.2",
+    "ember-cli-string-utils": "^1.1.0",
+    "esm": "^3.0.84",
+    "grabity": "^1.0.4",
+    "winston": "^3.1.0"
+  },
+  "scripts": {
+    "start": "node -r esm ."
+  },
+  "devDependencies": {
+    "axios": "^0.18.0",
+    "eslint": "^5.10.0",
+    "eslint-config-prettier": "^3.3.0",
+    "eslint-plugin-prettier": "^3.0.0",
+    "prettier": "^1.15.3"
+  }
+}
