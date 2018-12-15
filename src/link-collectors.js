@@ -9,7 +9,10 @@ const noLinkResponses = [
   ":wave: Hello! I'm a little bot helper :robot: for the Ember Weekly team. My job here is to take note of any interesting content you might want to share with us so we can feature it in future issues! Want to help me out? Paste a link on a DM channel or @mention me with the link :smiley:"
 ];
 
-export async function collectLinksFromMessage(message) {
+export async function collectLinksFromMessage(
+  message,
+  { passiveMode } = { passiveMode: false }
+) {
   // 1. We extract any URLs in the message.
   const urls = message.content.match(
     /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi
@@ -41,12 +44,14 @@ export async function collectLinksFromMessage(message) {
           Log.info("InvalidLink", {
             tags: { httpStatusCode: e.statusCode }
           });
-          message.reply(
-            `Oops! Apparently that link isn't quite right. When we tried to open it, we received a ${
-              e.statusCode
-            } HTTP error code. Maybe you had a typo, or the site's down? :shrug:`
-          );
-          thanked = true;
+          if (!passiveMode) {
+            message.reply(
+              `Oops! Apparently that link isn't quite right. When we tried to open it, we received a ${
+                e.statusCode
+              } HTTP error code. Maybe you had a typo, or the site's down? :shrug:`
+            );
+            thanked = true;
+          }
           return;
         }
 
@@ -63,10 +68,12 @@ export async function collectLinksFromMessage(message) {
               references: getResult.data.data.map(link => link.links.self)
             }
           });
-          message.reply(
-            ":tada: Thank you for collaborating! We already got this one, but keep 'em coming!"
-          );
-          thanked = true;
+          if (!passiveMode) {
+            message.reply(
+              ":tada: Thank you for collaborating! We already got this one, but keep 'em coming!"
+            );
+            thanked = true;
+          }
           return Promise.resolve();
         }
 
@@ -119,7 +126,7 @@ export async function collectLinksFromMessage(message) {
       })
     );
 
-    if (!thanked) {
+    if (!thanked && !passiveMode) {
       message.reply(
         ":tada: Thank you for collaborating with Ember Weekly! We've received your link. Who knows? It might get featured soon! :rocket:"
       );
@@ -128,8 +135,10 @@ export async function collectLinksFromMessage(message) {
     Log.info("FinishedCollection");
   } catch (e) {
     Log.error("UnexpectedError", { tags: { ...e } });
-    message.reply(
-      ":boom: Oops! Apparently our bot has tripped on its own feet. While we help it get up again, why don't you look up some interesting links to share with us later?"
-    );
+    if (!passiveMode) {
+      message.reply(
+        ":boom: Oops! Apparently our bot has tripped on its own feet. While we help it get up again, why don't you look up some interesting links to share with us later?"
+      );
+    }
   }
 }

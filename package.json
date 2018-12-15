@@ -13,6 +13,7 @@
     "ember-cli-string-utils": "^1.1.0",
     "esm": "^3.0.84",
     "grabity": "^1.0.4",
+    "jest": "^23.6.0",
     "winston": "^3.1.0"
   },
   "scripts": {
