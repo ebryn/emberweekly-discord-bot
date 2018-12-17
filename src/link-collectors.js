@@ -85,8 +85,8 @@ export async function collectLinksFromMessage(
             data: {
               type: "links",
               attributes: {
-                title: linkData.title,
-                description: linkData.description,
+                title: linkData.title || "",
+                description: linkData.description || "",
                 href: url,
                 issueId: null,
                 sectionId: 35, // Reading
