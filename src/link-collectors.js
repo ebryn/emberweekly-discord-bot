@@ -89,7 +89,7 @@ export async function collectLinksFromMessage(
                 description: linkData.description,
                 href: url,
                 issueId: null,
-                sectionId: null,
+                sectionId: 35, // Reading
                 position: null,
                 version: null,
                 observerScore: null,
