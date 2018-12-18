@@ -136,7 +136,13 @@ export async function collectLinksFromMessage(
 
     Log.info("FinishedCollection");
   } catch (e) {
-    Log.error("UnexpectedError", { tags: { ...e } });
+    if (e.config && e.request && e.response) {
+      Log.error("ChameleonError", {
+        tags: { status: e.response.statusCode, message: e.response.body }
+      });
+    } else {
+      Log.error("UnexpectedError", { tags: { ...e } });
+    }
     if (!passiveMode) {
       message.reply(
         ":boom: Oops! Apparently our bot has tripped on its own feet. While we help it get up again, why don't you look up some interesting links to share with us later?"
