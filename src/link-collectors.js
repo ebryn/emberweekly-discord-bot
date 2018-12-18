@@ -23,9 +23,11 @@ export async function collectLinksFromMessage(
 
   if (urls === null) {
     Log.info("NoLinksFound", { tags: { messageId: message.id } });
-    message.reply(
-      noLinkResponses[Math.floor(Math.random() * noLinkResponses.length)]
-    );
+    if (!passiveMode) {
+      message.reply(
+        noLinkResponses[Math.floor(Math.random() * noLinkResponses.length)]
+      );
+    }
     return;
   }
 

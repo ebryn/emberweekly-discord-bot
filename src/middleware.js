@@ -34,11 +34,11 @@ export function collectLinksFromDirectMessages() {
 
 export function collectLinksFromMentions(clientUser) {
   return async message => {
-    if (!message.isMentioned(clientUser)) {
-      return;
-    }
-
-    if (!isMessageChannelIn(mentionableChannels, message)) {
+    if (
+      !message.isMentioned(clientUser) ||
+      !isMessageChannelIn(mentionableChannels, message) ||
+      message.author.bot
+    ) {
       return;
     }
 
@@ -55,7 +55,7 @@ export function collectLinksFromMentions(clientUser) {
 
 export function collectLinksFromWatchedChannels() {
   return async message => {
-    if (!isMessageChannelIn(watchedChannels, message)) {
+    if (!isMessageChannelIn(watchedChannels, message) || message.author.bot) {
       return;
     }
 
