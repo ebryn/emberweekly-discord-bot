@@ -16,7 +16,11 @@ const isMessageChannelIn = (channelList, message) =>
 
 export function collectLinksFromDirectMessages() {
   return async message => {
-    if (message.channel.type !== "dm" || message.author.bot) {
+    if (message.author.bot) {
+      return;
+    }
+
+    if (message.channel.type !== "dm") {
       return;
     }
 
@@ -34,10 +38,15 @@ export function collectLinksFromDirectMessages() {
 
 export function collectLinksFromMentions(clientUser) {
   return async message => {
+    if (message.author.bot) {
+      return;
+    }
+
     if (
-      !message.isMentioned(clientUser) ||
-      !isMessageChannelIn(mentionableChannels, message) ||
-      message.author.bot
+      !(
+        message.isMentioned(clientUser) &&
+        isMessageChannelIn(mentionableChannels, message)
+      )
     ) {
       return;
     }
@@ -55,7 +64,11 @@ export function collectLinksFromMentions(clientUser) {
 
 export function collectLinksFromWatchedChannels() {
   return async message => {
-    if (!isMessageChannelIn(watchedChannels, message) || message.author.bot) {
+    if (message.author.bot) {
+      return;
+    }
+
+    if (!isMessageChannelIn(watchedChannels, message)) {
       return;
     }
 
